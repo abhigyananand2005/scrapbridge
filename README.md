@@ -422,3 +422,74 @@ GitHub: `@abhigyananand2005`
 This project is currently under active development.
 
 Documentation will be updated as new features are implemented, tested, and integrated into the application.
+
+---
+
+## Authentication
+
+ScrapBridge includes a JWT-based authentication foundation.
+
+### Implemented Authentication Features
+
+- Customer account registration
+- Secure password hashing with bcrypt
+- User login
+- JWT generation and verification
+- Protected authenticated-user endpoint
+- Bearer token authentication
+- Request validation using Zod
+- Duplicate-email protection
+- Invalid-credential handling
+- Expired and invalid-token handling
+- Customer and collector roles at the data-model level
+- Public registration restricted to customer accounts
+
+Collector account provisioning will be implemented through an authorized workflow rather than allowing users to assign themselves elevated roles.
+
+### Register
+
+    POST /api/auth/register
+
+Example request:
+
+    {
+      "name": "Example User",
+      "email": "user@example.com",
+      "password": "strong-password"
+    }
+
+Successful registration returns the newly created customer profile and a JWT.
+
+### Login
+
+    POST /api/auth/login
+
+Example request:
+
+    {
+      "email": "user@example.com",
+      "password": "strong-password"
+    }
+
+Successful login returns the authenticated user profile and a JWT.
+
+### Current User
+
+    GET /api/auth/me
+
+Authentication header:
+
+    Authorization: Bearer <token>
+
+This endpoint returns the currently authenticated user's safe profile representation.
+
+Passwords are never included in authentication responses.
+
+### Authentication Environment Variables
+
+The backend requires:
+
+    JWT_SECRET=<secure-random-secret>
+    JWT_EXPIRES_IN=7d
+
+The real JWT secret belongs only in `backend/.env` and must never be committed to version control.
